@@ -1,3 +1,5 @@
+-- In this SQL project, I'm querying a database with multiple table sin it to understand and quantify order and customer data.
+
 -- How many unique orders were placed in January (distinct orders ids)?
 SELECT count(DISTINCT orderID)
 FROM JanSales
