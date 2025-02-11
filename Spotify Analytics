@@ -1,0 +1,67 @@
+-- For this project, I downloaded Spotify data from Kaggle.
+-- I then created a table to insert Spotify data into.
+-- Finally, I performed analytics on the data using SQL in SQLite Studio. 
+
+CREATE TABLE BIT_DB.Spotifydata (
+id integer PRIMARY KEY,
+artist_name varchar NOT NULL,
+track_name varchar NOT NULL,
+track_id varchar NOT NULL,
+popularity integer NOT NULL,
+danceability decimal(4,3) NOT NULL,
+energy decimal(4,3) NOT NULL,
+song_key integer NOT NULL,
+loudness decimal(5,3) NOT NULL,
+song_mode integer NOT NULL,
+speechiness decimal(5,4) NOT NULL,
+acousticness decimal(6,5) NOT NULL,
+instrumentalness decimal(8,7) NOT NULL,
+liveness decimal(5,4) NOT NULL,
+valence decimal(4,3) NOT NULL,
+tempo decimal(6,3) NOT NULL,
+duration_ms integer NOT NULL,
+time_signature integer NOT NULL )
+
+-- I always start by taking a look at the first 10 rows of a table.
+SELECT * FROM BIT_DB.Spotifydata LIMIT 10;
+
+-- Below are the questions I wanted to answer.
+
+-- Who are the top 10 artists based on popularity?
+SELECT DISTINCT artist_name, popularity
+FROM Spotifydata
+ORDER BY popularity DESC
+LIMIT 10;
+
+-- Are there any artists on the top 50 list multiple times? If so, who are they and how many times are they on the list?
+SELECT artist_name, COUNT(*) as occurences 
+FROM Spotifydata
+GROUP BY artist_name
+HAVING occurences > 1;
+
+-- What is the longest song in the top 50 list?
+SELECT artist_name
+, track_name
+, MAX(duration_ms) AS duration_ms
+, duration_ms/1000 AS duration_seconds
+FROM Spotifydata;
+
+-- What is the shortest song in the top 50 list?
+SELECT artist_name
+, track_name
+, MIN(duration_ms) AS duration_ms
+, duration_ms/1000 AS duration_seconds
+FROM Spotifydata;
+
+-- What is the average tempo of the top 10 songs?
+SELECT AVG(tempo) AS top_10_AVG_tempo
+FROM Spotifydata
+WHERE id < 11;
+
+-- Which song in the top 50 has the highest energy?
+SELECT artist_name, track_name, MAX(energy) AS energy
+FROM Spotifydata;
+
+-- Which song in the top 50 has the lowest danceability?
+SELECT artist_name, track_name, MIN(danceability) AS danceability
+FROM Spotifydata;
